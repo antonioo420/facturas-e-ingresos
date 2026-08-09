@@ -1,0 +1,468 @@
+/*
+ * El tema sale del sistema mientras no se elija uno. Al pulsar el botón se fija
+ * data-tema en <html> y esa elección manda por encima de todo. Si la página se
+ * abre incrustada en un sitio que impone su tema con data-theme, también se
+ * respeta. Los iconos del botón viajan como tokens para no repetir reglas.
+ */
+:root {
+  color-scheme: light;
+  --papel: #fbfaf8;
+  --tinta: #1b1a17;
+  --suave: #736e66;
+  --linea: #e3dfd7;
+  --linea-fuerte: #c9c3b8;
+  --acento: #3f6b52;
+  --acento-suave: #edf2ee;
+  --error: #a4342a;
+  --aviso: #8a5a15;
+  --icono-sol: none;
+  --icono-luna: block;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-tema='claro']):not([data-theme='light']) {
+    color-scheme: dark;
+    --papel: #1a1a18;
+    --tinta: #e9e6e0;
+    --suave: #948f86;
+    --linea: #32312d;
+    --linea-fuerte: #4a4842;
+    --acento: #8fbf9f;
+    --acento-suave: #23281f;
+    --error: #e8938a;
+    --aviso: #d9ab63;
+    --icono-sol: block;
+    --icono-luna: none;
+  }
+}
+
+:root[data-tema='oscuro'],
+:root[data-theme='dark']:not([data-tema='claro']) {
+  color-scheme: dark;
+  --papel: #1a1a18;
+  --tinta: #e9e6e0;
+  --suave: #948f86;
+  --linea: #32312d;
+  --linea-fuerte: #4a4842;
+  --acento: #8fbf9f;
+  --acento-suave: #23281f;
+  --error: #e8938a;
+  --aviso: #d9ab63;
+  --icono-sol: block;
+  --icono-luna: none;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 3.5rem 1.5rem 6rem;
+  background: var(--papel);
+  color: var(--tinta);
+  font: 15px/1.55 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.app {
+  max-width: 42rem;
+  margin: 0 auto;
+}
+
+.cabecera {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 2.5rem;
+}
+
+h1 {
+  margin: 0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.5rem;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+}
+
+/* Botón de tema: el icono lo elige el CSS, sin parpadeo al cargar */
+.tema {
+  display: flex;
+  align-items: center;
+  padding: 0.35rem;
+  border: none;
+  border-radius: 3px;
+  background: none;
+  color: var(--suave);
+  cursor: pointer;
+}
+
+.tema:hover {
+  color: var(--tinta);
+  background: var(--acento-suave);
+}
+
+.tema .sol {
+  display: var(--icono-sol);
+}
+
+.tema .luna {
+  display: var(--icono-luna);
+}
+
+.tema:focus-visible {
+  outline: 2px solid var(--acento);
+  outline-offset: 2px;
+}
+
+.bloque {
+  padding-top: 1.75rem;
+  margin-top: 1.75rem;
+  border-top: 1px solid var(--linea);
+}
+
+.bloque:first-of-type {
+  padding-top: 0;
+  margin-top: 0;
+  border-top: none;
+}
+
+h2 {
+  margin: 0 0 0.9rem;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--suave);
+}
+
+/* Zonas de carga */
+.soltar {
+  display: block;
+  padding: 1.1rem 1rem;
+  border: 1px solid var(--linea);
+  border-radius: 3px;
+  text-align: center;
+  color: var(--suave);
+  font-size: 0.92rem;
+  cursor: pointer;
+  transition: border-color 0.12s, color 0.12s;
+}
+
+.soltar em {
+  font-style: normal;
+  color: var(--tinta);
+  border-bottom: 1px solid var(--linea-fuerte);
+}
+
+.soltar:hover {
+  border-color: var(--linea-fuerte);
+  color: var(--tinta);
+}
+
+.soltar.encima {
+  border-style: dashed;
+  border-color: var(--acento);
+  background: var(--acento-suave);
+  color: var(--tinta);
+}
+
+/* Campos de texto */
+.campo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  margin-top: 1.5rem;
+}
+
+.campo label {
+  font-size: 0.82rem;
+  color: var(--suave);
+}
+
+.campo input {
+  padding: 0.3rem 0;
+  border: none;
+  border-bottom: 1px solid var(--linea-fuerte);
+  border-radius: 0;
+  background: none;
+  color: var(--tinta);
+  font: inherit;
+}
+
+.campo input:focus {
+  outline: none;
+  border-bottom-color: var(--acento);
+}
+
+.campos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 2rem;
+}
+
+.campos .campo {
+  flex: 1 1 13rem;
+  margin-top: 0;
+}
+
+.ayuda {
+  margin: 0;
+  font-size: 0.79rem;
+  color: var(--suave);
+}
+
+.campo .ayuda {
+  margin-top: 0.15rem;
+}
+
+#pista-facturas {
+  margin-top: 0.9rem;
+}
+
+/* Resumen y acciones */
+.barra {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
+  align-items: baseline;
+  justify-content: space-between;
+  margin: 1.75rem 0 0.6rem;
+  font-size: 0.82rem;
+  color: var(--suave);
+}
+
+.enlaces {
+  display: flex;
+  gap: 1rem;
+}
+
+.enlaces button {
+  padding: 0;
+  border: none;
+  background: none;
+  color: var(--suave);
+  font: inherit;
+  cursor: pointer;
+  text-decoration: underline;
+  text-decoration-color: var(--linea-fuerte);
+  text-underline-offset: 3px;
+}
+
+.enlaces button:hover {
+  color: var(--tinta);
+  text-decoration-color: currentcolor;
+}
+
+/* Tabla de ingresos */
+.tabla-scroll {
+  max-height: 21rem;
+  overflow-y: auto;
+  border-top: 1px solid var(--linea);
+  border-bottom: 1px solid var(--linea);
+}
+
+.tabla-ingresos {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+
+.tabla-ingresos th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: var(--papel);
+  border-bottom: 1px solid var(--linea);
+  padding: 0.45rem 0.6rem;
+  text-align: left;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--suave);
+}
+
+.tabla-ingresos td {
+  padding: 0.35rem 0.6rem;
+  border-bottom: 1px solid var(--linea);
+}
+
+.tabla-ingresos tr:last-child td {
+  border-bottom: none;
+}
+
+.tabla-ingresos tr.excluida td {
+  color: var(--suave);
+  text-decoration: line-through;
+}
+
+.tabla-ingresos input[type="checkbox"] {
+  margin: 0;
+  accent-color: var(--acento);
+}
+
+.col-check {
+  width: 2rem;
+}
+
+.col-fecha {
+  width: 6rem;
+  white-space: nowrap;
+  color: var(--suave);
+}
+
+.col-importe {
+  width: 6.5rem;
+  text-align: right;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Lista de facturas */
+.lista-facturas {
+  list-style: none;
+  margin: 0.75rem 0 0;
+  padding: 0;
+}
+
+.lista-facturas:empty {
+  margin: 0;
+}
+
+.factura {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0.5rem 0.1rem;
+  border-bottom: 1px solid var(--linea);
+  font-size: 0.9rem;
+  transition: transform 0.14s ease;
+}
+
+.factura:first-child {
+  border-top: 1px solid var(--linea);
+}
+
+.factura.arrastrando {
+  position: relative;
+  z-index: 2;
+  background: var(--papel);
+  transition: none;
+  box-shadow: 0 1px 10px rgb(0 0 0 / 12%);
+}
+
+.factura .agarre {
+  padding: 0 0.15rem;
+  border: none;
+  background: none;
+  color: var(--linea-fuerte);
+  font: inherit;
+  line-height: 1;
+  letter-spacing: -0.1em;
+  cursor: grab;
+  user-select: none;
+  /* Sin esto el navegador se queda el gesto para hacer scroll. */
+  touch-action: none;
+}
+
+.factura .agarre:hover {
+  color: var(--suave);
+}
+
+.factura .agarre:focus-visible {
+  outline: 2px solid var(--acento);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+.factura.arrastrando .agarre {
+  cursor: grabbing;
+}
+
+.factura .orden {
+  min-width: 1.1rem;
+  color: var(--suave);
+  font-size: 0.8rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.factura .nombre {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.factura .peso {
+  color: var(--suave);
+  font-size: 0.78rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.factura .quitar {
+  padding: 0 0.2rem;
+  border: none;
+  background: none;
+  color: var(--linea-fuerte);
+  font-size: 1.05rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.factura .quitar:hover {
+  color: var(--error);
+}
+
+/* Pie */
+.pie {
+  margin-top: 2.5rem;
+  padding-top: 1.75rem;
+  border-top: 1px solid var(--linea);
+}
+
+#generar {
+  padding: 0.55rem 1.4rem;
+  border: none;
+  border-radius: 3px;
+  background: var(--tinta);
+  color: var(--papel);
+  font: inherit;
+  font-size: 0.92rem;
+  cursor: pointer;
+}
+
+#generar:disabled {
+  background: none;
+  border: 1px solid var(--linea);
+  color: var(--suave);
+  cursor: not-allowed;
+}
+
+.mensaje {
+  margin: 0.9rem 0 0;
+  font-size: 0.85rem;
+  color: var(--suave);
+}
+
+.mensaje.error {
+  color: var(--error);
+}
+
+.mensaje.aviso {
+  color: var(--aviso);
+}
+
+.mensaje.ok {
+  color: var(--acento);
+}
+
+.oculto {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}

@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Trimestral</title>
+    <script>
+      // Antes de pintar, para que no parpadee el tema contrario.
+      try {
+        var tema = localStorage.getItem('trimestral:tema')
+        if (tema) document.documentElement.dataset.tema = tema
+      } catch (error) {
+        /* modo privado sin almacenamiento: se sigue al sistema */
+      }
+    </script>
+  </head>
+  <body>
+    <main class="app">
+      <header class="cabecera">
+        <h1>Trimestral</h1>
+        <button type="button" class="tema" id="tema">
+          <svg class="luna" width="17" height="17" viewBox="0 0 24 24" fill="none"
+               stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" aria-hidden="true">
+            <path d="M20.2 14.8A8.6 8.6 0 0 1 9.2 3.8a8.6 8.6 0 1 0 11 11Z" />
+          </svg>
+          <svg class="sol" width="17" height="17" viewBox="0 0 24 24" fill="none"
+               stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="4" />
+            <path d="M12 2.8v2M12 19.2v2M5.1 5.1l1.4 1.4M17.5 17.5l1.4 1.4M2.8 12h2M19.2 12h2M5.1 18.9l1.4-1.4M17.5 6.5l1.4-1.4" />
+          </svg>
+        </button>
+      </header>
+
+      <section class="bloque">
+        <h2>Extracto</h2>
+        <label class="soltar" id="soltar-csv">
+          <input type="file" id="entrada-csv" accept=".csv,text/csv" hidden />
+          Suelta el CSV del banco <em>o elige un archivo</em>
+        </label>
+        <p class="mensaje" id="mensaje-csv" hidden></p>
+
+        <div id="zona-ingresos" hidden>
+          <div class="campo">
+            <label for="palabras">Cuenta como ingreso si el concepto contiene</label>
+            <input type="text" id="palabras" />
+            <span class="ayuda">Separado por comas. Lo demás queda tachado, sin entrar en el PDF.</span>
+          </div>
+
+          <div class="barra">
+            <span id="resumen-ingresos"></span>
+            <span class="enlaces">
+              <button type="button" id="marcar-todo">Marcar todo</button>
+              <button type="button" id="desmarcar-todo">Desmarcar</button>
+            </span>
+          </div>
+
+          <div class="tabla-scroll">
+            <table class="tabla-ingresos">
+              <thead>
+                <tr>
+                  <th class="col-check"><span class="oculto">Incluir</span></th>
+                  <th>Concepto</th>
+                  <th class="col-fecha">Fecha</th>
+                  <th class="col-importe">Importe</th>
+                </tr>
+              </thead>
+              <tbody id="cuerpo-ingresos"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section class="bloque">
+        <h2>Facturas</h2>
+        <label class="soltar" id="soltar-pdf">
+          <input type="file" id="entrada-pdf" accept="application/pdf,.pdf" multiple hidden />
+          Suelta las facturas en PDF <em>o elígelas</em>
+        </label>
+        <p class="ayuda" id="pista-facturas" hidden>
+          Arrastra por el tirador de la izquierda para cambiar el orden.
+        </p>
+        <ul class="lista-facturas" id="lista-facturas"></ul>
+      </section>
+
+      <section class="bloque">
+        <h2>Portada</h2>
+        <div class="campos">
+          <div class="campo">
+            <label for="titulo">Título</label>
+            <input type="text" id="titulo" value="Ingresos" />
+          </div>
+          <div class="campo">
+            <label for="subtitulo">Subtítulo</label>
+            <input type="text" id="subtitulo" placeholder="Los meses del extracto" />
+          </div>
+        </div>
+      </section>
+
+      <footer class="pie">
+        <button type="button" id="generar" disabled>Generar PDF</button>
+        <p class="mensaje" id="estado" hidden></p>
+      </footer>
+    </main>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

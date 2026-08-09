@@ -1,0 +1,12 @@
+node_modules/
+
+# Lo genera la accion de GitHub Pages en cada push
+dist/
+
+# Permisos locales de esta maquina
+.claude/
+
+# Restos de las revisiones con el navegador
+cap-*.png
+prueba-*.html
+perfil-*/
