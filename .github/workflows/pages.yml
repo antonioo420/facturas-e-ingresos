@@ -33,9 +33,9 @@ jobs:
 
       - run: npm run build
 
+      # Pages se activa una vez a mano en Settings -> Pages -> Source: GitHub
+      # Actions. El token de la accion no tiene permiso para crearlo solo.
       - uses: actions/configure-pages@v5
-        with:
-          enablement: true
 
       - uses: actions/upload-pages-artifact@v3
         with:
